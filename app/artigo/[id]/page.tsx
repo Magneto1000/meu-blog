@@ -50,44 +50,28 @@ export default function ArtigoCompleto() {
     setEnviando(false);
   };
 
+   
+  const blindarConteudoHTML = (html: string) => {
+    if (!html) return '';
+    return html
+      // 1. Envolve a tabela numa caixa blindada com barra de rolagem
+      .replace(/<table/gi, '<div style="width: 100%; max-width: 100%; overflow-x: auto; margin-bottom: 2rem; border: 2px solid black;"><table style="width: 100%; min-width: max-content; border-collapse: collapse;"')
+      .replace(/<\/table>/gi, '</table></div>')
+      // 2. Coloca as bordas e fundos nas células (th e td)
+      .replace(/<th/gi, '<th style="border: 2px solid black; padding: 1rem; background-color: #f3f4f6; text-align: left;"')
+      .replace(/<td/gi, '<td style="border: 2px solid black; padding: 1rem; background-color: #ffffff;"')
+      // 3. Blinda imagens para nunca vazarem a tela
+      .replace(/<img/gi, '<img style="max-width: 100%; height: auto; border-radius: 0.75rem;"')
+      // 4. Força links gigantes a quebrarem de linha
+      .replace(/<a /gi, '<a style="color: #2563eb; text-decoration: underline; word-break: break-all;" ');
+  };
+
   if (carregando) return <div className="min-h-screen flex items-center justify-center bg-gray-50"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div></div>;
   if (!artigo) return <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center px-4"><h1 className="text-4xl font-extrabold text-black mb-4">Artigo não encontrado</h1><a href="/" className="bg-black text-white px-6 py-3 rounded-lg font-bold border-2 border-black">Voltar ao Início</a></div>;
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans flex flex-col overflow-x-hidden">
       
-      {/* 
-        A MÁGICA INQUEBRÁVEL FICA AQUI!
-        Esses estilos só valem para a classe "conteudo-artigo" e forçam a tabela 
-        a rolar lateralmente, não importando a Vercel ou o tamanho da tela. 
-      */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .conteudo-artigo table {
-          display: block !important;
-          max-width: 100% !important;
-          overflow-x: auto !important;
-          white-space: nowrap !important;
-          border-collapse: collapse !important;
-          margin-bottom: 2rem !important;
-        }
-        .conteudo-artigo th, .conteudo-artigo td {
-          border: 2px solid #000 !important;
-          padding: 0.75rem !important;
-          background-color: #fff !important;
-        }
-        .conteudo-artigo th {
-          background-color: #f3f4f6 !important;
-        }
-        .conteudo-artigo a {
-          word-break: break-all !important;
-        }
-        .conteudo-artigo img {
-          max-width: 100% !important;
-          height: auto !important;
-          border-radius: 0.75rem !important;
-        }
-      `}} />
-
       <nav className="bg-white border-b-2 border-black sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
           <a href="/" className="font-extrabold text-xl md:text-2xl text-black tracking-tight">UUP <span className="text-blue-600">Software</span></a>
@@ -96,7 +80,9 @@ export default function ArtigoCompleto() {
       </nav>
 
       <main className="max-w-4xl mx-auto w-full px-4 md:px-6 py-8 md:py-12 flex-1 min-w-0">
-        <article className="bg-white border-2 border-black rounded-2xl p-6 md:p-14 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-12 w-full max-w-full min-w-0">
+        
+      
+        <article className="bg-white border-2 border-black rounded-2xl p-6 md:p-14 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-12 w-full max-w-full">
           
           <div className="inline-block bg-black text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-6">
             {artigo.categoria || 'Artigo'}
@@ -129,14 +115,14 @@ export default function ArtigoCompleto() {
             </div>
           )}
 
-          {/* Adicionamos a classe 'conteudo-artigo' para se conectar com a nossa Mágica acima */}
+      
           <div 
-            className="conteudo-artigo w-full max-w-full overflow-hidden text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words 
+            className="w-full max-w-full overflow-hidden text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words 
             [&>p]:mb-6 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 
             [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-extrabold [&>h1]:mb-4 
             [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-extrabold [&>h2]:mb-4 
-            [&>strong]:font-extrabold [&>a]:text-blue-600 [&>a]:underline"
-            dangerouslySetInnerHTML={{ __html: artigo.conteudo }}
+            [&>strong]:font-extrabold"
+            dangerouslySetInnerHTML={{ __html: blindarConteudoHTML(artigo.conteudo) }}
           />
         </article>
 
