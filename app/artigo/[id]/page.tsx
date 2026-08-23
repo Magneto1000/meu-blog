@@ -64,7 +64,8 @@ export default function ArtigoCompleto() {
       </nav>
 
       <main className="max-w-4xl mx-auto w-full px-4 md:px-6 py-8 md:py-12 flex-1">
-        <article className="bg-white border-2 border-black rounded-2xl p-6 md:p-14 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-12 w-full max-w-full overflow-hidden">
+       
+        <article className="bg-white border-2 border-black rounded-2xl p-6 md:p-14 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-12 w-full max-w-full">
           
           <div className="inline-block bg-black text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-6">
             {artigo.categoria || 'Artigo'}
@@ -75,7 +76,7 @@ export default function ArtigoCompleto() {
           </h1>
 
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 mb-8 md:mb-10 border-y-2 border-black gap-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
               <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-lg flex-shrink-0">
                 {artigo.autor_nome ? artigo.autor_nome.charAt(0).toUpperCase() : 'U'}
               </div>
@@ -84,7 +85,6 @@ export default function ArtigoCompleto() {
                 <p className="text-xs text-gray-600 truncate">{artigo.autor_email || 'suporte@uupsoftware.com'}</p>
               </div>
             </div>
-            {/* Data de Publicação Destacada */}
             <div className="text-xs md:text-sm font-extrabold text-black bg-gray-100 px-4 py-2 rounded-lg border-2 border-black whitespace-nowrap shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
               Publicado em: {artigo.created_at ? new Date(artigo.created_at).toLocaleDateString('pt-BR') : 'Recente'}
             </div>
@@ -98,17 +98,13 @@ export default function ArtigoCompleto() {
             </div>
           )}
 
-          {/* 
-            A MÁGICA DA TABELA AQUI: 
-            Adicionadas as classes [&_table]:block [&_table]:w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_th]:border-2 [&_th]:border-black [&_td]:border-2 [&_td]:border-black 
-          */}
           <div 
-            className="text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words [&>p]:mb-6 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-extrabold [&>h1]:mb-4 [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-extrabold [&>h2]:mb-4 [&>strong]:font-extrabold [&>a]:text-blue-600 [&>a]:underline [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_table]:block [&_table]:w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_th]:border-2 [&_th]:border-black [&_th]:p-3 [&_th]:bg-gray-100 [&_td]:border-2 [&_td]:border-black [&_td]:p-3 [&_td]:bg-white"
+            className="w-full max-w-full overflow-hidden text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words [&>p]:mb-6 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-extrabold [&>h1]:mb-4 [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-extrabold [&>h2]:mb-4 [&>strong]:font-extrabold [&>a]:text-blue-600 [&>a]:underline [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_th]:border-2 [&_th]:border-black [&_th]:p-3 [&_th]:bg-gray-100 [&_td]:border-2 [&_td]:border-black [&_td]:p-3 [&_td]:bg-white"
             dangerouslySetInnerHTML={{ __html: artigo.conteudo }}
           />
         </article>
 
-        <section className="bg-white border-2 border-black rounded-2xl p-6 md:p-10 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full">
+        <section className="bg-white border-2 border-black rounded-2xl p-6 md:p-10 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full max-w-full">
           <h3 className="text-xl md:text-2xl font-extrabold text-black mb-6">Comentários ({comentarios.length})</h3>
 
           <form onSubmit={handleEnviarComentario} className="space-y-4 mb-8 md:mb-10 pb-8 border-b-2 border-black">

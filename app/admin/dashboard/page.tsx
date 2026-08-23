@@ -93,26 +93,40 @@ export default function Dashboard() {
         </div>
       </aside>
 
-      <main className="flex-1 p-4 md:p-12 w-full max-w-full overflow-hidden">
+      <main className="flex-1 p-4 md:p-12 w-full min-w-0">
         
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b-2 border-black pb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-black">Painel de Autoria</h1>
           </div>
+          {/* BOTÃO ADICIONADO AQUI PARA A VERSÃO MOBILE */}
           <div className="flex gap-2 md:hidden w-full overflow-x-auto pb-2">
             <button onClick={() => setAbaAtiva('artigos')} className="px-4 py-2 bg-black text-white text-xs font-bold rounded-lg border-2 border-black whitespace-nowrap">Artigos</button>
             <button onClick={() => setAbaAtiva('comentarios')} className="px-4 py-2 bg-gray-200 text-black text-xs font-bold rounded-lg border-2 border-black whitespace-nowrap">Comentários</button>
+            <Link href="/" target="_blank" className="px-4 py-2 bg-white text-black text-xs font-bold rounded-lg border-2 border-black whitespace-nowrap shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">🌐 Ver Site Público</Link>
           </div>
           <Link href="/admin/editor" className="w-full md:w-auto text-center bg-black text-white px-6 py-3 rounded-xl font-extrabold hover:bg-gray-800 transition shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black inline-flex items-center justify-center gap-2">
             <span>+</span> Novo Artigo
           </Link>
         </header>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-10">
-          <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"><h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 truncate">Publicados</h3><p className="text-2xl md:text-4xl font-extrabold text-black">{artigos.filter(a => a.status === 'Publicado').length}</p></div>
-          <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"><h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 truncate">Rascunhos</h3><p className="text-2xl md:text-4xl font-extrabold text-black">{artigos.filter(a => a.status !== 'Publicado').length}</p></div>
-          <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"><h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 truncate">Comentários</h3><p className="text-2xl md:text-4xl font-extrabold text-black">{comentarios.length}</p></div>
-          <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"><h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 truncate">Visitas Totais</h3><p className="text-2xl md:text-4xl font-extrabold text-blue-600">{totalVisitas}</p></div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-10">
+          <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col justify-center">
+            <h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 break-words">Publicados</h3>
+            <p className="text-2xl md:text-4xl font-extrabold text-black truncate">{artigos.filter(a => a.status === 'Publicado').length}</p>
+          </div>
+          <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col justify-center">
+            <h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 break-words">Rascunhos</h3>
+            <p className="text-2xl md:text-4xl font-extrabold text-black truncate">{artigos.filter(a => a.status !== 'Publicado').length}</p>
+          </div>
+          <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col justify-center">
+            <h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 break-words">Comentários</h3>
+            <p className="text-2xl md:text-4xl font-extrabold text-black truncate">{comentarios.length}</p>
+          </div>
+          <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col justify-center">
+            <h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 break-words">Visitas Totais</h3>
+            <p className="text-2xl md:text-4xl font-extrabold text-blue-600 truncate">{totalVisitas}</p>
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full max-w-full overflow-hidden">
@@ -120,8 +134,8 @@ export default function Dashboard() {
             <h2 className="font-extrabold text-black text-base md:text-lg">{abaAtiva === 'artigos' ? 'Gerenciar Publicações' : 'Moderação'}</h2>
           </div>
           
-          <div className="overflow-x-auto w-full">
-            <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
+          <div className="overflow-x-auto w-full pb-2">
+            <table className="w-full text-left border-collapse min-w-max">
               <thead>
                 <tr className="border-b-2 border-black text-xs font-extrabold text-black uppercase tracking-wider bg-gray-50">
                   {abaAtiva === 'artigos' ? (
@@ -146,12 +160,11 @@ export default function Dashboard() {
                   artigos.length === 0 ? <tr><td colSpan={4} className="px-6 py-12 text-center font-bold text-black">Nenhum artigo.</td></tr> :
                   artigos.map(a => (
                     <tr key={a.id} className="border-b border-black hover:bg-gray-50 transition-colors">
-                      <td className="px-4 md:px-6 py-4 font-bold text-black min-w-[250px] leading-relaxed">{a.titulo}</td>
-                      <td className="px-4 md:px-6 py-4"><span className="px-3 py-1.5 rounded-full text-[10px] font-extrabold bg-black text-white">{a.status}</span></td>
-                      {/* Data de Publicação formatada com pt-BR */}
+                      <td className="px-4 md:px-6 py-4 font-bold text-black max-w-[300px] break-words">{a.titulo}</td>
+                      <td className="px-4 md:px-6 py-4 whitespace-nowrap"><span className="px-3 py-1.5 rounded-full text-[10px] font-extrabold bg-black text-white">{a.status}</span></td>
                       <td className="px-4 md:px-6 py-4 text-xs font-extrabold text-gray-800 whitespace-nowrap">{a.created_at ? new Date(a.created_at).toLocaleDateString('pt-BR') : '--'}</td>
-                      <td className="px-4 md:px-6 py-4 text-right">
-                        <div className="flex justify-end gap-3">
+                      <td className="px-4 md:px-6 py-4 text-right whitespace-nowrap">
+                        <div className="flex justify-end gap-3 min-w-[160px]">
                           <Link href={`/admin/editor?id=${a.id}`} className="text-black bg-gray-200 px-4 py-2 rounded-lg border-2 border-black font-extrabold text-xs hover:bg-black hover:text-white transition shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Editar</Link>
                           <button onClick={() => handleExcluirArtigo(a.id)} className="text-white bg-red-600 px-4 py-2 rounded-lg border-2 border-black font-extrabold text-xs hover:bg-red-700 transition shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Excluir</button>
                         </div>
@@ -163,9 +176,9 @@ export default function Dashboard() {
                   comentarios.map(c => (
                     <tr key={c.id} className="border-b border-black hover:bg-gray-50 transition-colors">
                       <td className="px-4 md:px-6 py-4 font-bold text-black min-w-[150px]">{c.autor_nome}</td>
-                      <td className="px-4 md:px-6 py-4 text-sm font-extrabold text-blue-700 min-w-[200px] leading-relaxed">{c.artigos?.titulo}</td>
-                      <td className="px-4 md:px-6 py-4 text-sm font-medium text-black min-w-[250px] leading-relaxed">{c.texto}</td>
-                      <td className="px-4 md:px-6 py-4 text-right">
+                      <td className="px-4 md:px-6 py-4 text-sm font-extrabold text-blue-700 max-w-[200px] break-words">{c.artigos?.titulo}</td>
+                      <td className="px-4 md:px-6 py-4 text-sm font-medium text-black max-w-[300px] break-words">{c.texto}</td>
+                      <td className="px-4 md:px-6 py-4 text-right whitespace-nowrap">
                         <button onClick={() => handleExcluirComentario(c.id)} className="text-white bg-red-600 px-4 py-2 rounded-lg border-2 border-black font-extrabold text-xs hover:bg-red-700 transition shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">Remover</button>
                       </td>
                     </tr>

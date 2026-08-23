@@ -161,11 +161,12 @@ export default function EditorArtigo() {
                   <option>Artigo Científico</option>
                   <option>Opinião / UX Engineering</option>
                   <option>Estudo de Caso</option>
+                  <option>Artigo de Opinião</option>
                 </select>
               </div>
               <div className="w-full overflow-hidden">
                 <label className="block text-[10px] md:text-xs font-extrabold text-black uppercase tracking-wider mb-2">Capa do Artigo (JPG/PNG)</label>
-                {/* Ajuste do botão de arquivo para não vazar a tela */}
+               
                 <input type="file" accept="image/jpeg, image/png" onChange={handleFileUpload} className="w-full px-3 py-2 border-2 border-black rounded-xl text-black font-bold bg-gray-50 file:mr-2 md:file:mr-4 file:py-2 file:px-2 md:file:px-4 file:rounded-lg file:border-2 file:border-black file:text-[10px] md:file:text-xs file:font-extrabold file:bg-black file:text-white hover:file:bg-gray-800 cursor-pointer text-xs" />
                 {capaUrl && <p className="text-[10px] md:text-xs text-green-700 font-extrabold mt-2">✔ Imagem carregada!</p>}
               </div>
