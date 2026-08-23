@@ -56,28 +56,26 @@ export default function ArtigoCompleto() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans flex flex-col overflow-x-hidden">
       
-      {/* 
-        A "CAMISA DE FORÇA" PARA O PC
-        Oculta o vazamento no contêiner de leitura e força a tabela a rolar no Desktop!
-      */}
-      <style dangerouslySetInnerHTML={{ __html: `
+ <style dangerouslySetInnerHTML={{ __html: `
         .leitura-artigo {
-          width: 100%;
           max-width: 100%;
-          overflow-x: hidden; /* Isso proíbe a caixa de esticar no PC */
         }
+
+        /* 📱 1. COMPORTAMENTO MOBILE (Padrão): Rolagem lateral perfeita */
         .leitura-artigo table {
           display: block !important;
           width: 100% !important;
           max-width: 100% !important;
-          overflow-x: auto !important; /* Cria a barra de rolagem */
-          white-space: nowrap !important;
+          overflow-x: auto !important;
+          white-space: nowrap !important; /* Mantém o texto em uma linha para poder rolar */
           border-collapse: collapse !important;
           margin: 1.5rem 0 !important;
+          font-size: 0.875rem !important;
         }
         .leitura-artigo th, .leitura-artigo td {
           border: 2px solid #000 !important;
           padding: 0.75rem !important;
+          background-color: #fff !important;
         }
         .leitura-artigo th {
           background-color: #f3f4f6 !important;
@@ -91,6 +89,20 @@ export default function ArtigoCompleto() {
           word-break: break-all !important;
           color: #2563eb !important;
           text-decoration: underline !important;
+        }
+
+        /* 💻 2. COMPORTAMENTO PC (Telas largas): Tabela Fixa e Contida */
+        @media (min-width: 768px) {
+          .leitura-artigo table {
+            display: table !important; /* Muda o modo de exibição para tabela real */
+            table-layout: fixed !important; /* Proíbe de esticar além da tela */
+            white-space: normal !important; /* Libera a quebra de linha do texto */
+            word-wrap: break-word !important;
+          }
+          .leitura-artigo th, .leitura-artigo td {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+          }
         }
       `}} />
 
