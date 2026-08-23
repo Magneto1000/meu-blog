@@ -119,9 +119,9 @@ export default function Home() {
                       <h3 className="text-lg font-bold text-black mb-2 line-clamp-2">
                         {artigo.titulo}
                       </h3>
-                      <p className="text-gray-700 text-sm mb-6 line-clamp-3 leading-relaxed">
-                        {artigo.conteudo}
-                      </p>
+                  <p className="text-gray-700 text-sm mb-6 line-clamp-3 leading-relaxed">
+                    {artigo.conteudo ? artigo.conteudo.replace(/<[^>]*>?/gm, '') : ''}
+                  </p>    
                     </div>
                     
                     <div className="pt-4 border-t border-gray-200">
