@@ -56,6 +56,38 @@ export default function ArtigoCompleto() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans flex flex-col overflow-x-hidden">
       
+      {/* 
+        A MÁGICA INQUEBRÁVEL FICA AQUI!
+        Esses estilos só valem para a classe "conteudo-artigo" e forçam a tabela 
+        a rolar lateralmente, não importando a Vercel ou o tamanho da tela. 
+      */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .conteudo-artigo table {
+          display: block !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+          white-space: nowrap !important;
+          border-collapse: collapse !important;
+          margin-bottom: 2rem !important;
+        }
+        .conteudo-artigo th, .conteudo-artigo td {
+          border: 2px solid #000 !important;
+          padding: 0.75rem !important;
+          background-color: #fff !important;
+        }
+        .conteudo-artigo th {
+          background-color: #f3f4f6 !important;
+        }
+        .conteudo-artigo a {
+          word-break: break-all !important;
+        }
+        .conteudo-artigo img {
+          max-width: 100% !important;
+          height: auto !important;
+          border-radius: 0.75rem !important;
+        }
+      `}} />
+
       <nav className="bg-white border-b-2 border-black sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
           <a href="/" className="font-extrabold text-xl md:text-2xl text-black tracking-tight">UUP <span className="text-blue-600">Software</span></a>
@@ -63,9 +95,8 @@ export default function ArtigoCompleto() {
         </div>
       </nav>
 
-      <main className="max-w-4xl mx-auto w-full px-4 md:px-6 py-8 md:py-12 flex-1">
-       
-        <article className="bg-white border-2 border-black rounded-2xl p-6 md:p-14 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-12 w-full max-w-full">
+      <main className="max-w-4xl mx-auto w-full px-4 md:px-6 py-8 md:py-12 flex-1 min-w-0">
+        <article className="bg-white border-2 border-black rounded-2xl p-6 md:p-14 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-12 w-full max-w-full min-w-0">
           
           <div className="inline-block bg-black text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-6">
             {artigo.categoria || 'Artigo'}
@@ -98,8 +129,13 @@ export default function ArtigoCompleto() {
             </div>
           )}
 
+          {/* Adicionamos a classe 'conteudo-artigo' para se conectar com a nossa Mágica acima */}
           <div 
-            className="w-full max-w-full overflow-hidden text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words [&>p]:mb-6 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-extrabold [&>h1]:mb-4 [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-extrabold [&>h2]:mb-4 [&>strong]:font-extrabold [&>a]:text-blue-600 [&>a]:underline [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:border-collapse [&_th]:border-2 [&_th]:border-black [&_th]:p-3 [&_th]:bg-gray-100 [&_td]:border-2 [&_td]:border-black [&_td]:p-3 [&_td]:bg-white"
+            className="conteudo-artigo w-full max-w-full overflow-hidden text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words 
+            [&>p]:mb-6 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 
+            [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-extrabold [&>h1]:mb-4 
+            [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-extrabold [&>h2]:mb-4 
+            [&>strong]:font-extrabold [&>a]:text-blue-600 [&>a]:underline"
             dangerouslySetInnerHTML={{ __html: artigo.conteudo }}
           />
         </article>
