@@ -9,8 +9,7 @@ export default function Home() {
   const [carregando, setCarregando] = useState(true);
   const [copiado, setCopiado] = useState(false);
 
-  // A chave PIX real da sua empresa/projeto
-  const chavePix = "uupsoftwaresolutions@gmail.com";
+  const chavePix = "magnetotito@gmail.com";
 
   useEffect(() => {
     const buscarArtigosPublicos = async () => {
@@ -20,7 +19,7 @@ export default function Home() {
         .eq('status', 'Publicado'); 
       
       if (error) {
-        console.error("Erro ao carregar os artigos:", error.message);
+        console.error("Erro ao carregar:", error.message);
       } else if (data) {
         setArtigos(data);
       }
@@ -36,14 +35,20 @@ export default function Home() {
     setTimeout(() => setCopiado(false), 2000); 
   };
 
+  const limparHtml = (html: string) => {
+    if (!html) return '';
+    return html
+      .replace(/<[^>]+>/g, '') 
+      .replace(/&[a-zA-Z0-9#]+;/g, ' '); 
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
+    <div className="min-h-screen bg-gray-50 font-sans flex flex-col overflow-x-hidden">
       
-      {/* Navegação Superior */}
       <nav className="bg-white border-b-2 border-black sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
           <div className="font-extrabold text-2xl text-black tracking-tight">
-            UUP <span className="text-blue-600">Software</span> Solutions
+            UUP <span className="text-blue-600">Software</span>
           </div>
           <div className="space-x-6 text-sm font-bold text-black hidden md:flex items-center">
             <Link href="/" className="hover:underline">Início</Link>
@@ -55,29 +60,26 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header className="bg-black text-white py-16 px-6 border-b-2 border-black">
+      <header className="bg-black text-white py-12 md:py-16 px-4 md:px-6 border-b-2 border-black">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-            Explorando o Futuro da <br/>Engenharia de Software
+          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">
+            Explorando o Futuro da <br className="hidden md:block"/>Engenharia de Software
           </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
             Artigos, estudos de caso e insights sobre UX Engineering, arquitetura de sistemas e metodologias ágeis.
           </p>
         </div>
       </header>
 
-      {/* Layout Principal Dividido (Artigos na esquerda, Sidebar PIX na direita) */}
-      <main id="artigos" className="max-w-7xl mx-auto px-6 py-12 flex-1 w-full grid grid-cols-1 lg:grid-cols-4 gap-10">
+      <main id="artigos" className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12 flex-1 w-full grid grid-cols-1 lg:grid-cols-4 gap-8 md:gap-10">
         
-        {/* Coluna da Esquerda: Lista de Artigos */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 w-full">
           <div className="mb-8 pb-4 border-b-2 border-black flex justify-between items-end">
             <div>
               <h2 className="text-2xl font-extrabold text-black">Últimas Publicações</h2>
-              <p className="text-sm text-gray-600">Conteúdos técnicos revisados pela equipe.</p>
+              <p className="text-sm text-gray-600 mt-1">Conteúdos técnicos revisados pela equipe.</p>
             </div>
-            <div className="h-2 w-12 bg-black rounded"></div>
+            <div className="h-2 w-12 bg-black rounded hidden md:block"></div>
           </div>
 
           {carregando ? (
@@ -95,33 +97,30 @@ export default function Home() {
                   
                   <div className="h-44 bg-gray-200 overflow-hidden relative border-b-2 border-black">
                     {artigo.capa_url ? (
-                      <img 
-                        src={artigo.capa_url} 
-                        alt={artigo.titulo} 
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                      />
+                      <img src={artigo.capa_url} alt={artigo.titulo} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                     ) : (
-                      <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                        <span className="text-black font-extrabold text-lg">UUP</span>
-                      </div>
+                      <div className="w-full h-full bg-gray-100 flex items-center justify-center"><span className="text-black font-extrabold text-lg">UUP</span></div>
                     )}
                     <div className="absolute top-3 left-3 bg-black text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-black">
                       {artigo.categoria || 'Artigo'}
                     </div>
                   </div>
 
-                  <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div className="p-5 md:p-6 flex-1 flex flex-col justify-between">
                     <div>
-                      <div className="text-gray-600 text-xs font-bold mb-2 flex items-center justify-between">
-                        <span>{artigo.created_at ? new Date(artigo.created_at).toLocaleDateString('pt-BR') : 'Recente'}</span>
-                        <span className="text-black">{artigo.autor_nome || 'UUP Software'}</span>
+                      <div className="text-[10px] md:text-xs font-bold mb-4 flex items-center justify-between">
+                        {/* Data Destacada na Home */}
+                        <span className="bg-gray-100 text-black px-2 py-1 rounded-md border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] whitespace-nowrap">
+                          {artigo.created_at ? new Date(artigo.created_at).toLocaleDateString('pt-BR') : 'Recente'}
+                        </span>
+                        <span className="text-black truncate ml-3 font-extrabold">Por: {artigo.autor_nome || 'UUP'}</span>
                       </div>
                       <h3 className="text-lg font-bold text-black mb-2 line-clamp-2">
                         {artigo.titulo}
                       </h3>
-                  <p className="text-gray-700 text-sm mb-6 line-clamp-3 leading-relaxed">
-                    {artigo.conteudo ? artigo.conteudo.replace(/<[^>]*>?/gm, '') : ''}
-                  </p>    
+                      <p className="text-gray-700 text-sm mb-6 line-clamp-3 leading-relaxed break-words">
+                        {limparHtml(artigo.conteudo)}
+                      </p>
                     </div>
                     
                     <div className="pt-4 border-t border-gray-200">
@@ -139,10 +138,8 @@ export default function Home() {
           )}
         </div>
 
-        {/* Coluna da Direita: Card PIX Lateral Estilizado */}
-        <aside className="lg:col-span-1">
+        <aside className="lg:col-span-1 w-full">
           <div className="sticky top-24 bg-white rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 flex flex-col items-center text-center">
-            
             <div className="bg-black text-white p-2.5 rounded-xl mb-3 border border-black">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
@@ -151,48 +148,30 @@ export default function Home() {
             
             <h3 className="text-lg font-extrabold text-black mb-2">Apoie o Projeto</h3>
             <p className="text-xs text-gray-700 mb-6 leading-relaxed font-medium">
-              Contribua para manter a UUP Software ativa e produzindo conteúdos e ferramentas gratuitas.
+              Contribua para manter a UUP Software ativa e produzindo conteúdos gratuitos.
             </p>
 
-            {/* QR Code com borda marcante */}
             <div className="w-32 h-32 bg-white rounded-xl border-2 border-black flex items-center justify-center mb-5 p-2 shadow-sm">
-              <img 
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${chavePix}`} 
-                alt="QR Code PIX" 
-                className="w-full h-full object-contain"
-              />
+              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${chavePix}`} alt="QR Code PIX" className="w-full h-full object-contain" />
             </div>
 
             <div className="w-full text-left">
-              <label className="block text-[11px] font-extrabold text-black uppercase tracking-wider mb-1">
-                Chave PIX (E-mail)
-              </label>
+              <label className="block text-[11px] font-extrabold text-black uppercase tracking-wider mb-1">Chave PIX</label>
               <div className="flex items-center bg-gray-50 border-2 border-black rounded-lg overflow-hidden">
-                <input 
-                  type="text" 
-                  readOnly 
-                  value={chavePix} 
-                  className="w-full bg-transparent text-xs text-black font-bold px-2.5 py-2 outline-none select-all" 
-                />
-                <button 
-                  onClick={handleCopiarPix}
-                  className={`px-3 py-2 transition font-extrabold text-xs flex-shrink-0 border-l-2 border-black ${copiado ? 'bg-green-500 text-white' : 'bg-black text-white hover:bg-gray-800'}`}
-                >
+                <input type="text" readOnly value={chavePix} className="w-full bg-transparent text-xs text-black font-bold px-2.5 py-2 outline-none select-all truncate" />
+                <button onClick={handleCopiarPix} className={`px-3 py-2 transition font-extrabold text-xs flex-shrink-0 border-l-2 border-black ${copiado ? 'bg-green-500 text-white' : 'bg-black text-white hover:bg-gray-800'}`}>
                   {copiado ? 'Copiado!' : 'Copiar'}
                 </button>
               </div>
             </div>
-
           </div>
         </aside>
 
       </main>
 
-      {/* Rodapé */}
       <footer className="bg-black text-white py-6 text-center text-xs mt-auto border-t-2 border-black">
         <p>© 2026 UUP Software Solutions. Todos os direitos reservados.</p>
       </footer>
-
     </div>
   );
 }
