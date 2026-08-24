@@ -9,7 +9,7 @@ export default function Home() {
   const [carregando, setCarregando] = useState(true);
   const [copiado, setCopiado] = useState(false);
 
-  const chavePix = "magnetotito@gmail.com";
+  const chavePix = "uupsoftwaresolutions@gmail.com";
 
   useEffect(() => {
     const buscarArtigosPublicos = async () => {
@@ -48,7 +48,7 @@ export default function Home() {
       <nav className="bg-white border-b-2 border-black sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
           <div className="font-extrabold text-2xl text-black tracking-tight">
-            UUP <span className="text-blue-600">Software</span>
+            UUP <span className="text-blue-600">Software </span> Solutions
           </div>
           <div className="space-x-6 text-sm font-bold text-black hidden md:flex items-center">
             <Link href="/" className="hover:underline">Início</Link>
@@ -109,7 +109,7 @@ export default function Home() {
                   <div className="p-5 md:p-6 flex-1 flex flex-col justify-between">
                     <div>
                       <div className="text-[10px] md:text-xs font-bold mb-4 flex items-center justify-between">
-                        {/* Data Destacada na Home */}
+                        
                         <span className="bg-gray-100 text-black px-2 py-1 rounded-md border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] whitespace-nowrap">
                           {artigo.created_at ? new Date(artigo.created_at).toLocaleDateString('pt-BR') : 'Recente'}
                         </span>
@@ -152,7 +152,7 @@ export default function Home() {
             </p>
 
             <div className="w-32 h-32 bg-white rounded-xl border-2 border-black flex items-center justify-center mb-5 p-2 shadow-sm">
-              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${chavePix}`} alt="QR Code PIX" className="w-full h-full object-contain" />
+              <img src={`/qr_code.jpeg`} alt="QR Code PIX" className="w-full h-full object-contain" />
             </div>
 
             <div className="w-full text-left">
