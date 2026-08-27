@@ -4,7 +4,7 @@ export default function LerArtigo() {
   return (
     <div className="min-h-screen bg-white text-gray-800 font-sans">
       
-      {/* Cabeçalho Minimalista para Leitura */}
+ 
       <header className="py-6 px-4 md:px-12 max-w-4xl mx-auto flex justify-between items-center border-b border-gray-100">
         <a href="/" className="text-xl font-extrabold text-blue-900 hover:text-blue-700 transition">
           Juraci Tito Neto
@@ -16,7 +16,7 @@ export default function LerArtigo() {
 
       <main className="max-w-3xl mx-auto py-12 px-6 md:px-0">
         
-        {/* Cabeçalho do Artigo */}
+    
         <div className="mb-10 text-center">
           <span className="text-xs font-bold uppercase tracking-wider text-blue-600 mb-4 block">Artigo Científico</span>
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
@@ -29,7 +29,7 @@ export default function LerArtigo() {
           </div>
         </div>
 
-        {/* Corpo do Texto */}
+      
         <article className="prose prose-lg text-gray-700 leading-relaxed">
           <p className="mb-6 font-semibold text-xl text-gray-800">
             Resumo: Este artigo analisa a relevância dos padrões arquiteturais no desenvolvimento Low-Code, investigando como ferramentas de alta produtividade demandam a aplicação rigorosa de conceitos como Modularidade e Separação de Preocupações (SoC).

@@ -48,7 +48,7 @@ export default function Home() {
       <nav className="bg-white border-b-2 border-black sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
           <div className="font-extrabold text-2xl text-black tracking-tight">
-            UUP <span className="text-blue-600">Software </span> Solutions
+            JN <span className="text-blue-600">TITO </span> NETO
           </div>
           <div className="space-x-6 text-sm font-bold text-black hidden md:flex items-center">
             <Link href="/" className="hover:underline">Início</Link>

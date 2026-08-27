@@ -148,7 +148,7 @@ export default function ArtigoCompleto() {
             </div>
           )}
 
-          {/* O texto e a tabela ficam contidos dentro desta div com a classe 'leitura-artigo' */}
+        
           <div 
             className="leitura-artigo text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words 
             [&>p]:mb-6 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 
