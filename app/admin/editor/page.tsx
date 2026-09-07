@@ -91,32 +91,37 @@ export default function EditorArtigo() {
     setCarregando(false);
   };
 
-  const handlePublicar = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  // NOVA FUNÇÃO: Agora recebe true (rascunho) ou false (publicar)
+  const handleSalvar = async (comoRascunho: boolean) => {
     if (!conteudo || conteudo === '<p><br></p>') {
       setMensagem('❌ O conteúdo do artigo não pode estar vazio.');
       return;
     }
 
     setCarregando(true);
-    setMensagem('Salvando...');
+    setMensagem(comoRascunho ? 'Salvando rascunho...' : 'Publicando...');
 
+    // Adicionado o campo rascunho aqui:
     const dadosArtigo = {
       titulo, categoria, capa_url: capaUrl, conteudo,
-      autor_nome: autorNome, autor_email: autorEmail, status: 'Publicado'
+      autor_nome: autorNome, autor_email: autorEmail, 
+      status: comoRascunho ? 'Rascunho' : 'Publicado',
+      rascunho: comoRascunho 
     };
 
     if (idEdicao) {
       const { error } = await supabase.from('artigos').update(dadosArtigo).eq('id', idEdicao);
       if (error) setMensagem('❌ Erro ao atualizar: ' + error.message);
-      else setMensagem('✅ Sucesso! Artigo atualizado.');
+      else setMensagem(comoRascunho ? '✅ Sucesso! Rascunho atualizado.' : '✅ Sucesso! Artigo atualizado e publicado.');
     } else {
       const { error } = await supabase.from('artigos').insert([dadosArtigo]);
-      if (error) setMensagem('❌ Erro ao publicar: ' + error.message);
+      if (error) setMensagem('❌ Erro ao salvar: ' + error.message);
       else {
-        setMensagem('✅ Sucesso! Novo artigo publicado.');
-        setTitulo(''); setCapaUrl(''); setConteudo(''); setAutorNome(''); setAutorEmail('');
+        setMensagem(comoRascunho ? '✅ Sucesso! Salvo como rascunho.' : '✅ Sucesso! Novo artigo publicado.');
+        if (!comoRascunho) {
+          // Limpa os campos só se publicar definitivamente
+          setTitulo(''); setCapaUrl(''); setConteudo(''); setAutorNome(''); setAutorEmail('');
+        }
       }
     }
     setCarregando(false);
@@ -125,11 +130,9 @@ export default function EditorArtigo() {
   if (!autenticado) return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div></div>;
 
   return (
-    // Adicionado overflow-x-hidden e espaçamentos adaptáveis
     <div className="min-h-screen bg-gray-50 font-sans p-4 md:p-12 overflow-x-hidden">
       <div className="max-w-5xl mx-auto">
         
-        {/* Ajuste do header para quebrar em coluna no celular */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-black">{idEdicao ? 'Editar Artigo' : 'Novo Artigo'}</h1>
@@ -141,13 +144,14 @@ export default function EditorArtigo() {
         </header>
 
         {mensagem && (
-          <div className={`mb-6 p-4 rounded-lg font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-xs md:text-sm ${mensagem.includes('Erro') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+          <div className={`mb-6 p-4 rounded-lg font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-xs md:text-sm ${mensagem.includes('Erro') || mensagem.includes('vazio') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
             {mensagem}
           </div>
         )}
 
+        {/* Removido o onSubmit daqui */}
         <main className="bg-white p-5 md:p-10 rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] border-2 border-black w-full max-w-full overflow-hidden">
-          <form onSubmit={handlePublicar} className="space-y-5 md:space-y-6 w-full">
+          <form className="space-y-5 md:space-y-6 w-full">
             
             <div>
               <label className="block text-[10px] md:text-xs font-extrabold text-black uppercase tracking-wider mb-2">Título do Artigo</label>
@@ -166,7 +170,6 @@ export default function EditorArtigo() {
               </div>
               <div className="w-full overflow-hidden">
                 <label className="block text-[10px] md:text-xs font-extrabold text-black uppercase tracking-wider mb-2">Capa do Artigo (JPG/PNG)</label>
-               
                 <input type="file" accept="image/jpeg, image/png" onChange={handleFileUpload} className="w-full px-3 py-2 border-2 border-black rounded-xl text-black font-bold bg-gray-50 file:mr-2 md:file:mr-4 file:py-2 file:px-2 md:file:px-4 file:rounded-lg file:border-2 file:border-black file:text-[10px] md:file:text-xs file:font-extrabold file:bg-black file:text-white hover:file:bg-gray-800 cursor-pointer text-xs" />
                 {capaUrl && <p className="text-[10px] md:text-xs text-green-700 font-extrabold mt-2">✔ Imagem carregada!</p>}
               </div>
@@ -190,10 +193,33 @@ export default function EditorArtigo() {
               </div>
             </div>
 
-            <div className="flex justify-end pt-5 md:pt-6 border-t-2 border-black mt-5 md:mt-6">
-              <button type="submit" disabled={carregando} className={`w-full md:w-auto text-white px-8 py-3.5 rounded-xl font-extrabold transition shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black text-sm md:text-base ${carregando ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-800'}`}>
-                {carregando ? 'Salvando...' : (idEdicao ? 'Atualizar Artigo' : 'Publicar Artigo')}
+            {/* NOVOS BOTÕES ALINHADOS COM O SEU DESIGN */}
+            <div className="flex flex-col sm:flex-row justify-end gap-4 pt-5 md:pt-6 border-t-2 border-black mt-5 md:mt-6">
+              
+              <button 
+                type="button" 
+                disabled={carregando}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSalvar(true); // TRUE = Salva como Rascunho
+                }}
+                className={`w-full sm:w-auto px-8 py-3.5 rounded-xl font-extrabold transition shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black text-sm md:text-base text-black bg-white hover:bg-gray-100 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${carregando ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {carregando ? 'Processando...' : 'Salvar como Rascunho'}
               </button>
+
+              <button 
+                type="button" 
+                disabled={carregando}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSalvar(false); // FALSE = Publica direto
+                }}
+                className={`w-full sm:w-auto text-white px-8 py-3.5 rounded-xl font-extrabold transition shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black text-sm md:text-base ${carregando ? 'bg-gray-400 cursor-not-allowed' : 'bg-black hover:bg-gray-800 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]'}`}
+              >
+                {carregando ? 'Processando...' : (idEdicao ? 'Atualizar e Publicar' : 'Publicar Artigo')}
+              </button>
+
             </div>
 
           </form>

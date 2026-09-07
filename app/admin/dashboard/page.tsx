@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   const buscarDadosDashboard = async () => {
     setCarregando(true);
-    const { data: resArtigos } = await supabase.from('artigos').select('*');
+    const { data: resArtigos } = await supabase.from('artigos').select('*').order('created_at', { ascending: false });
     if (resArtigos) setArtigos(resArtigos);
 
     const { data: resComentarios } = await supabase.from('comentarios').select('*, artigos(titulo)');
@@ -99,7 +99,6 @@ export default function Dashboard() {
           <div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-black">Painel de Autoria</h1>
           </div>
-          {/* BOTÃO ADICIONADO AQUI PARA A VERSÃO MOBILE */}
           <div className="flex gap-2 md:hidden w-full overflow-x-auto pb-2">
             <button onClick={() => setAbaAtiva('artigos')} className="px-4 py-2 bg-black text-white text-xs font-bold rounded-lg border-2 border-black whitespace-nowrap">Artigos</button>
             <button onClick={() => setAbaAtiva('comentarios')} className="px-4 py-2 bg-gray-200 text-black text-xs font-bold rounded-lg border-2 border-black whitespace-nowrap">Comentários</button>
@@ -117,7 +116,7 @@ export default function Dashboard() {
           </div>
           <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col justify-center">
             <h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 break-words">Rascunhos</h3>
-            <p className="text-2xl md:text-4xl font-extrabold text-black truncate">{artigos.filter(a => a.status !== 'Publicado').length}</p>
+            <p className="text-2xl md:text-4xl font-extrabold text-black truncate">{artigos.filter(a => a.status !== 'Publicado' || a.rascunho).length}</p>
           </div>
           <div className="bg-white p-4 md:p-6 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col justify-center">
             <h3 className="text-gray-600 text-[10px] md:text-xs font-extrabold uppercase mb-1 break-words">Comentários</h3>
@@ -160,7 +159,17 @@ export default function Dashboard() {
                   artigos.length === 0 ? <tr><td colSpan={4} className="px-6 py-12 text-center font-bold text-black">Nenhum artigo.</td></tr> :
                   artigos.map(a => (
                     <tr key={a.id} className="border-b border-black hover:bg-gray-50 transition-colors">
-                      <td className="px-4 md:px-6 py-4 font-bold text-black max-w-[300px] break-words">{a.titulo}</td>
+                      {/* CÉLULA DO TÍTULO ATUALIZADA COM A ETIQUETA DE RASCUNHO */}
+                      <td className="px-4 md:px-6 py-4 font-bold text-black max-w-[300px] break-words">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span>{a.titulo}</span>
+                          {a.rascunho && (
+                            <span className="bg-yellow-300 text-black text-[10px] uppercase font-extrabold px-2 py-1 border-2 border-black rounded-md shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] whitespace-nowrap">
+                              Rascunho
+                            </span>
+                          )}
+                        </div>
+                      </td>
                       <td className="px-4 md:px-6 py-4 whitespace-nowrap"><span className="px-3 py-1.5 rounded-full text-[10px] font-extrabold bg-black text-white">{a.status}</span></td>
                       <td className="px-4 md:px-6 py-4 text-xs font-extrabold text-gray-800 whitespace-nowrap">{a.created_at ? new Date(a.created_at).toLocaleDateString('pt-BR') : '--'}</td>
                       <td className="px-4 md:px-6 py-4 text-right whitespace-nowrap">

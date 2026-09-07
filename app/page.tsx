@@ -17,6 +17,8 @@ export default function Home() {
         .from('artigos')
         .select('*')
         .eq('status', 'Publicado'); 
+        .eq('rascunho', false);
+        .order('created_at', { ascending: false });
       
       if (error) {
         console.error("Erro ao carregar:", error.message);
