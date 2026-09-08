@@ -16,8 +16,8 @@ export default function Home() {
       const { data, error } = await supabase
         .from('artigos')
         .select('*')
-        .eq('status', 'Publicado'); 
-        .eq('rascunho', false);
+        .eq('status', 'Publicado')
+        .eq('rascunho', false)
         .order('created_at', { ascending: false });
       
       if (error) {
