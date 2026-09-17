@@ -108,7 +108,7 @@ export default function ArtigoCompleto() {
 
       <nav className="bg-white border-b-2 border-black sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
-          <a href="/" className="font-extrabold text-xl md:text-2xl text-black tracking-tight">JN <span className="text-blue-600">Tito Neto</span></a>
+          <a href="/" className="font-extrabold text-xl md:text-2xl text-black tracking-tight"><span className="text-black-600">JN Tito Neto</span></a>
           <a href="/" className="text-xs md:text-sm font-bold text-black bg-gray-100 px-3 md:px-4 py-2 rounded-lg border border-black">&larr; Voltar</a>
         </div>
       </nav>
@@ -148,15 +148,49 @@ export default function ArtigoCompleto() {
             </div>
           )}
 
-        
-          <div 
-            className="leitura-artigo text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words 
-            [&>p]:mb-6 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 
-            [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-extrabold [&>h1]:mb-4 
-            [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-extrabold [&>h2]:mb-4 
-            [&>strong]:font-extrabold"
-            dangerouslySetInnerHTML={{ __html: artigo.conteudo }}
-          />
+          {/* NOVA ÁREA DE CONTEÚDO (TEXTO + PDF) */}
+          <div className="flex flex-col gap-8 w-full">
+            
+            {/* 1. Exibe o texto digitado (se houver e não for apenas um parágrafo vazio) */}
+            {artigo.conteudo && artigo.conteudo !== '<p><br></p>' && (
+              <div 
+                className="leitura-artigo text-base md:text-lg text-black leading-loose font-serif border-l-4 border-black pl-4 md:pl-6 py-2 break-words 
+                [&>p]:mb-6 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 
+                [&>h1]:text-2xl md:[&>h1]:text-3xl [&>h1]:font-extrabold [&>h1]:mb-4 
+                [&>h2]:text-xl md:[&>h2]:text-2xl [&>h2]:font-extrabold [&>h2]:mb-4 
+                [&>strong]:font-extrabold"
+                dangerouslySetInnerHTML={{ __html: artigo.conteudo }}
+              />
+            )}
+
+            {/* 2. Exibe o PDF e o botão (se houver arquivo anexado) */}
+            {artigo.pdf_url && (
+              <div className={`flex flex-col gap-8 items-center w-full ${artigo.conteudo && artigo.conteudo !== '<p><br></p>' ? 'pt-8 border-t-4 border-black mt-4' : ''}`}>
+                
+                {/* Botão de Download */}
+                <a 
+                  href={artigo.pdf_url} 
+                  download 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="bg-black text-white px-8 py-4 text-sm md:text-lg font-extrabold border-2 border-black rounded-xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-800 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all w-full md:w-auto text-center flex justify-center items-center gap-3 uppercase tracking-wider"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Baixar Artigo Completo (PDF)
+                </a>
+
+                {/* Leitor Embutido */}
+                <iframe 
+                  src={artigo.pdf_url} 
+                  className="w-full h-[600px] md:h-[900px] border-4 border-black rounded-2xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-gray-200"
+                  title={`PDF do artigo ${artigo.titulo}`}
+                />
+              </div>
+            )}
+          </div>
+
         </article>
 
         <section className="bg-white border-2 border-black rounded-2xl p-6 md:p-10 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full">

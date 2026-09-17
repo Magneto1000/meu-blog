@@ -6,8 +6,8 @@ export default function Projetos() {
       
       {/* Cabeçalho Menor para Páginas Internas */}
       <header className="bg-white shadow-sm py-4 px-4 md:px-12 flex justify-between items-center">
-        <a href="/" className="text-2xl font-extrabold text-blue-900 hover:text-blue-700 transition">
-          Juraci Tito Neto
+        <a href="/" className="text-2xl font-extrabold text-black hover:text-blue-700 transition">
+          JN Tito Neto
         </a>
         <nav className="hidden md:flex gap-6 font-semibold">
           <a href="/" className="hover:text-blue-600 transition">Home</a>
